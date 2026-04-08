@@ -1,5 +1,24 @@
-google-cloud-aiplatform
+# Google Cloud & AI SDKs
+google-cloud-aiplatform>=1.70.0
+google-cloud-alloydb-connector[pg8000]
+google-cloud-firestore
+
+# Agent Development Kit (ADK) & Orchestration
+# Note: In a real environment, ensure you have access to the specific
+# APAC Academy ADK distribution or use the Vertex AI Agent Builder SDK
+google-cloud-discoveryengine
+
+# Backend Framework
 fastapi
-uvicorn
-pydantic
+uvicorn[standard]
+pydantic>=2.0.0
 python-multipart
+
+# Data Handling & Database
+pg8000
+sqlalchemy
+numpy
+pandas
+
+# Image Processing (Helper for local testing)
+Pillow
