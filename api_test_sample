@@ -8,10 +8,32 @@ curl -X POST "http://localhost:8080/scan-food" \
 Sample Response
 JSON
 {
-  "status": "Red",
-  "reason": "Your current blood sugar is 145 mg/dL. This item contains 35g of added sugar, which will likely cause a dangerous glucose spike.",
-  "nutrients_detected": {
-    "sugar": "35g",
-    "sodium": "210mg"
-  }
+  "request_id": "genai-academy-apac-001",
+  "agents_involved": ["BiometricAgent", "VisionAgent", "NutritionistAgent"],
+  "user_context": {
+    "condition": "Type-2 Diabetes",
+    "current_glucose": "155 mg/dL",
+    "status": "Elevated"
+  },
+  "analysis": {
+    "item_identified": "Honey Oat Granola Bar",
+    "risk_factors": [
+      {
+        "nutrient": "Added Sugars",
+        "value": "10g",
+        "impact": "High glycemic load given current elevated glucose."
+      },
+      {
+        "nutrient": "Allergen",
+        "value": "Nut Traces",
+        "impact": "Matches user's documented nut allergy."
+      }
+    ]
+  },
+  "verdict": {
+    "status": "Red",
+    "recommendation": "DO NOT EAT",
+    "reasoning": "This item contains 10g of added sugar which will further spike your elevated glucose levels (155 mg/dL). Additionally, it poses an allergy risk based on your profile."
+  },
+  "suggested_alternative": "A handful of raw almonds or a low-carb protein bar."
 }

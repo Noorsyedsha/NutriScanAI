@@ -14,7 +14,7 @@ class BiometricAgent(Agent):
             "condition": "Type-2 Diabetes",
             "recent_glucose": 155,
             "threshold": 140
-        }
+    }
 
 
 # 2. Vision Agent: Multimodal Label Analysis
