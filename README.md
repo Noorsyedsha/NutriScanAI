@@ -1,65 +1,40 @@
-import vertexai
-from vertexai.generative_models import GenerativeModel, Image, Part
-from fastapi import FastAPI, UploadFile, File
-import json
+# 🍎 NutriScan AI: Agentic Personalized Nutritionist
+**Built for Gen AI Academy APAC Edition**
 
-# Initialize Vertex AI
-PROJECT_ID = "your-project-id"
-LOCATION = "us-central1"
-vertexai.init(project=PROJECT_ID, location=LOCATION)
+NutriScan AI is a high-impact, agentic health-tech solution that bridges the gap between wearable biometric data and real-time dietary choices. Using the **Agent Development Kit (ADK)** and **Gemini 1.5 Flash**, it provides hyper-personalized food safety verdicts based on a user's live physiological state.
 
-app = FastAPI()
-model = GenerativeModel("gemini-1.5-flash")
+---
 
+## 🚀 Problem Statement
+Traditional nutrition labels provide static data that doesn't account for individual health conditions. For a diabetic or hypertensive user, a "standard" snack can be dangerous depending on their current blood sugar or heart rate. NutriScan AI provides the missing context to prevent adverse health events.
 
-# Mock function to simulate fetching data from a smartwatch/Health Connect
-def get_mock_health_metrics():
-    return {
-        "heart_rate": 85,
-        "blood_sugar": 145,  # Slightly high
-        "allergies": ["peanuts", "shellfish"],
-        "conditions": ["type-2 diabetes"]
-    }
+## 🛠️ Tech Stack & Google Services
+* **Orchestration:** Agent Development Kit (ADK) for multi-agent reasoning.
+* **AI Brain:** Gemini 1.5 Flash (Vertex AI) for multimodal food label analysis.
+* **Vector Database:** AlloyDB AI for storing and retrieving long-term health trends and user profiles.
+* **Compute:** Google Cloud Run (Serverless).
+* **Connectivity:** Model Context Protocol (MCP) for secure biometric data ingestion.
 
+---
 
-@app.post("/scan-food")
-async def scan_food(file: UploadFile = File(...)):
-    # 1. Get real-time health data
-    health_context = get_mock_health_metrics()
+## 🧠 Agentic Workflow
 
-    # 2. Prepare the Image for Gemini
-    image_bytes = await file.read()
-    food_image = Part.from_data(data=image_bytes, mime_type="image/jpeg")
+1.  **Biometric Agent (Researcher):** Retrieves real-time metrics (Glucose, HR) and historical health context from **AlloyDB AI**.
+2.  **Vision Agent (Analyst):** Performs multimodal OCR on the food item/label to extract nutritional facts (Sugar, Sodium, Allergens).
+3.  **Nutritionist Agent (The Decider):** An **ADK-managed agent** that synthesizes data from both agents to provide a Green/Yellow/Red verdict with clinical reasoning.
 
-    # 3. Formulate the "Reasoning" Prompt
-    prompt = f"""
-    You are a personalized health assistant. 
-    Analyze the provided image of a food item or nutrition label.
+---
 
-    USER HEALTH CONTEXT:
-    - Conditions: {health_context['conditions']}
-    - Current Blood Sugar: {health_context['blood_sugar']} mg/dL
-    - Allergies: {health_context['allergies']}
+## ✨ Key Features
+* **Multimodal Input:** Analyze food via photos or live video streams.
+* **Personalized Guardrails:** Custom safety thresholds for Diabetes, Hypertension, and Allergies.
+* **Predictive Alerts:** Foresees potential glucose spikes based on historical data in AlloyDB AI.
+* **Closed-Loop Feedback:** Learns from user reactions to improve future recommendations.
 
-    TASK:
-    1. Identify the food item or read the nutrition label.
-    2. Determine if it is safe for this specific user to eat RIGHT NOW.
-    3. Return a JSON response with:
-       - "status": "Green" (Safe), "Yellow" (Caution), or "Red" (Danger)
-       - "reason": A short 1-sentence explanation.
-       - "nutrients_detected": Key facts like sugar or sodium content.
-    """
+---
 
-    # 4. Generate Content
-    response = model.generate_content(
-        [food_image, prompt],
-        generation_config={"response_mime_type": "application/json"}
-    )
+## ⚙️ Installation & Setup
 
-    return json.loads(response.text)
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+### 1. Enable GCP Services
+```bash
+gcloud services enable aiplatform.googleapis.com alloydb.googleapis.com run.googleapis.com
