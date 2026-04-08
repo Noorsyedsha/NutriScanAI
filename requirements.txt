@@ -1,0 +1,5 @@
+google-cloud-aiplatform
+fastapi
+uvicorn
+pydantic
+python-multipart

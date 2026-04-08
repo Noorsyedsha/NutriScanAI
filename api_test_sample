@@ -1,0 +1,17 @@
+You can test the endpoint using curl by sending an image of a food label:
+
+Bash
+curl -X POST "http://localhost:8080/scan-food" \
+     -H "Content-Type: multipart/form-data" \
+     -F "file=C:\Users\syeds\PycharmProjects\NutriScanAI\samples\label-1.jpg"
+
+Sample Response
+JSON
+{
+  "status": "Red",
+  "reason": "Your current blood sugar is 145 mg/dL. This item contains 35g of added sugar, which will likely cause a dangerous glucose spike.",
+  "nutrients_detected": {
+    "sugar": "35g",
+    "sodium": "210mg"
+  }
+}
